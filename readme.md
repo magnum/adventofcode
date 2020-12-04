@@ -2,4 +2,4 @@
        
 visit https://adventofcode.com/2020/ to participate
 
-private leaderboard, code ```1154084-1c178d1d```
+private leaderboard code ```1154084-1c178d1d```
