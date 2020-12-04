@@ -1047,3 +1047,4 @@ passports.map( p => {
   return p;
 })
 .filter( p => p.is_valid )
+.length
