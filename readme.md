@@ -2,4 +2,4 @@
        
 visit https://adventofcode.com/2020/ to participate
 
-private leaderboard code ```1154084-1c178d1d```
+trying to solve in JS using a browser's console w/ no external libs... 
