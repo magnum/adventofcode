@@ -15,18 +15,13 @@ fetch('https://adventofcode.com/2020/day/4/input')
         let passports = input 
         .split("\n\n")
         .map( p => {
-          return p.replaceAll('\n', ' ').split(" ").map( kv => { 
-            return {
-              name: kv.split(":")[0],
-              value: kv.split(":")[1],
-            }
-          })
+          return p.replaceAll('\n', ' ').split(" ").map( v => v.split(":"));
         })
         .filter( p => { // validating
           return p.filter( f => {
-            let validation = validations.filter( v => v.field == f.name)[0]
+            let validation = validations.filter( v => v.field == f[0])[0]
             if(!validation) return false;
-            return (f.value.match(new RegExp(validation.regexp, "g")) || []).length > 0;
+            return (f[1].match(validation.regexp) || []).length > 0;
           }).length >= validations.length;
         })
         console.log(passports)
