@@ -1,4 +1,4 @@
-# Advent of Code λy.2020
+# Advent of Code 2020
        
 visit https://adventofcode.com/2020/ to participate
 
