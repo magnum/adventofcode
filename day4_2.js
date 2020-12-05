@@ -12,18 +12,15 @@ fetch('https://adventofcode.com/2020/day/4/input')
         ]
         
         // parsing passports
-        let passports = input 
-        .split("\n\n")
-        .map( p => {
-          return p.replaceAll('\n', ' ').split(" ").map( v => v.split(":"));
-        })
-        .filter( p => { // validating
-          return p.filter( f => {
-            let validation = validations.filter( v => v.field == f[0])[0]
+        const passports_valid = input.split("\n\n")
+        .map( block => block.replaceAll('\n', ' ').split(" ").map( kv => kv.split(":")))
+        .filter( passport => { // validating
+          return passport.filter( field => {
+            let validation = validations.filter( validation => validation.field == field[0])[0]
             if(!validation) return false;
-            return (f[1].match(validation.regexp) || []).length > 0;
+            return (field[1].match(validation.regexp) || []).length > 0;
           }).length >= validations.length;
         })
-        console.log(passports)
+        console.log(passports_valid)
     });
 });
