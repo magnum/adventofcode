@@ -14,21 +14,16 @@ fetch('https://adventofcode.com/2020/day/4/input')
         // parsing passports
         let passports = input 
         .split("\n\n")
-        .map( p => p.trim())
-        .filter( p => p != "")
         .map( p => {
+          return p.replaceAll('\n', ' ').split(" ").map( kv => { 
             return {
-              str: p,
-              fields: p.replaceAll('\n', ' ').split(" ").map( i => { 
-                return {
-                  name: i.split(":")[0],
-                  value: i.split(":")[1],
-                }
-              })
+              name: kv.split(":")[0],
+              value: kv.split(":")[1],
             }
+          })
         })
         .filter( p => { // validating
-          return p.fields.filter( f => {
+          return p.filter( f => {
             let validation = validations.filter( v => v.field == f.name)[0]
             if(!validation) return false;
             return (f.value.match(new RegExp(validation.regexp, "g")) || []).length > 0;
