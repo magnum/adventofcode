@@ -12,7 +12,7 @@ def execute(instructions, only_complete=false)
     steps << i
   end
   completed = (i == instructions.length)
-  puts "acc #{acc}, steps: #{steps.length}, i: #{i}, completed? #{completed}" if !only_complete || (only_complete && completed)
+  puts "acc: #{acc}, steps: #{steps.length}, i: #{i}, completed? #{completed}" if !only_complete || (only_complete && completed)
   i
 end
 
