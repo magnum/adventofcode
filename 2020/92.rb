@@ -1,6 +1,3 @@
-require 'open-uri'
-require 'pry'
-
 #part 1
 number_buggy = nil
 numbers = open('9.txt') {|f| f.read }.split("\n").map(&:to_i)
