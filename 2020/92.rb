@@ -1,7 +1,6 @@
 require 'open-uri'
 require 'pry'
 
-
 #part 1
 number_buggy = nil
 numbers = open('9.txt') {|f| f.read }.split("\n").map(&:to_i)
@@ -15,20 +14,10 @@ numbers.each_with_index do |n, i|
 end
 puts "number_buggy: #{number_buggy}"
 
-
 # part2
 (2..numbers.length).each do |size|
-  items = numbers.map(&:to_i)
-  from = 0
-  to = size-1
-  while to < items.length
-    block = items[from..to]
-    sum = block.inject{|s,i| s+i}
-    found = sum == number_buggy && block.length == size
-    result = block.min+block.max
-    puts "block size: #{block.size}, elements: #{block.join(", ")}, sum: #{sum} == #{number_buggy}? #{found}, result: #{result}"
-    return if found
-    from += 1
-    to = from+size-1
+  for from in 0..(numbers.length-size)
+    block = numbers[from..(from+size)]
+    (puts "min_max_sum: #{block.min+block.max}" ; return) if block.inject{|s,i| s+i} == number_buggy
   end
 end
