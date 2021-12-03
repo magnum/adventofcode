@@ -35,40 +35,30 @@ gamma = Binary.to_decimal(gamma_string)
 epsilon = Binary.to_decimal(epsilon_string)
 puts "gamma: #{gamma_string}, decimal: #{gamma}"
 puts "epsilon: #{epsilon_string}, decimal: #{epsilon}"
-puts "result #{gamma*epsilon}"
-
-
+puts "part1 result: #{gamma*epsilon}"
 
 #part2
-lines_ogr = lines.clone
-bit_position = 0
-count = 0
-while lines_ogr.length > 1 &&  count < 1000
-  values = get_values(lines_ogr)
-  value = values[bit_position]
-  bit_value = value.count("1") >= value.count("0") ? "1" : "0" #todo
-  lines_ogr = lines_ogr.delete_if{|l| l[bit_position] != bit_value}
-  #puts "#{value.join ","}, bit_position: #{bit_position}, bit_value: #{bit_value}, lines_ogr: #{lines_ogr.join(", ")}"
-  bit_position += 1
-  count +=1
+def filter_lines(lines)
+  filtered_lines = lines.clone
+  bit_position = 0
+  count = 0
+  while filtered_lines.length > 1 &&  count < 1000
+    values = get_values(filtered_lines)
+    value = values[bit_position]
+    bit_value = yield(value)
+    filtered_lines = filtered_lines.delete_if{|l| l[bit_position] != bit_value}
+    #puts "#{value.join ","}, bit_position: #{bit_position}, bit_value: #{bit_value}, filtered_lines: #{filtered_lines.join(", ")}"
+    bit_position += 1
+    count +=1
+  end
+  filtered_lines
 end
-ogr = Binary.to_decimal(lines_ogr.first)
-puts "ogr: #{ogr}"
 
+ogr_string = filter_lines(lines){|value| value.count("1") >= value.count("0") ? "1" : "0"}.last
+ogr = Binary.to_decimal(ogr_string)
 
-lines_csr = lines.clone
-bit_position = 0
-count = 0
-while lines_csr.length > 1 &&  count < 1000
-  values = get_values(lines_csr)
-  value = values[bit_position]
-  bit_value = value.count("0") <= value.count("1") ? "0" : "1" #todo
-  lines_csr = lines_csr.delete_if{|l| l[bit_position] != bit_value}
-  #puts "#{value.join ","}, bit_position: #{bit_position}, bit_value: #{bit_value}, lines_csr: #{lines_csr.join(", ")}"
-  bit_position += 1
-  count +=1
-end
-csr = Binary.to_decimal(lines_csr.first)
-puts "csr: #{csr}"
-
-puts "ogr*csr: #{ogr*csr}"
+csr_string = filter_lines(lines){|value| value.count("0") <= value.count("1") ? "0" : "1"}.last
+csr = Binary.to_decimal(csr_string)
+puts "gamma: #{ogr_string}, decimal: #{ogr}"
+puts "epsilon: #{csr_string}, decimal: #{csr}"
+puts "part2 result: #{ogr*csr}"
