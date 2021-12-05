@@ -17,20 +17,18 @@ lines.each_with_index do |line, i|
   end
 end
 
-def board_wins?(board)
-  (board.find_all{|line| line.count(CHECK) == line.length}.length > 0) || 
-  (board.transpose.find_all{|line| line.count(CHECK) == line.length}.length > 0)
+def board_wins?(d,i,b)
+  board_win!(d, i, b) if [b, b.transpose].map{|b| b.find_all{|line| line.count(CHECK) == line.length}.length}.index(1)
 end
 
 def board_win!(d, i, b)
   @boards.delete(b)
-  puts "with #{d}, board #{i} wins w/ result #{b.flatten.delete_if{|n| n==CHECK}.inject(0){|sum, n| sum+n}*d}" 
+  result = b.flatten.delete_if{|n| n==CHECK}.inject(0){|sum, n| sum+n}*d
+  puts "with #{d}, board #{i} wins w/ result #{result}" 
   puts b.map{|l| l.map{|n| n==CHECK ? "\e[31m#{n} \e[0m" : n.to_s.rjust(2," ")}.join(",")}.join("\n")
 end
 
 drawings.each do |d|
-  @boards = @boards.map{|board| board.map{|line| line.map{|n| n==d ? CHECK : n}}} 
-  @boards.each_with_index do |board, i| 
-     board_win!(d, i, board) if board_wins?(board)
-  end
+  @boards = @boards.map{|b| b.map{|line| line.map{|n| n==d ? CHECK : n}}} 
+  @boards.each_with_index{|b, i| board_wins?(d, i, b)}
 end
