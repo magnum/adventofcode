@@ -1,6 +1,6 @@
 require 'pry'
 
-lines = open('5.txt') {|f| f.read }
+lines = open('5.test.txt') {|f| f.read }
 .split("\n")
 
 lines.each_with_index do |line, i|
