@@ -1,28 +1,26 @@
 require 'pry'
 
-lines = open('5.test.txt') {|f| f.read }
+lines = open('5.txt') {|f| f.read }
 .split("\n")
 
-def values_between(a,b)
-  b > a ? [*a..b] : [*b..a].reverse
+def set_point(x,y)
+  key = "#{x}_#{y}"
+  @points[key] = @points[key] ? @points[key]+1 : 1
 end
 
-points = {}
+@points = {}
 lines.each_with_index do |line, i|
   from, to = line.split("->").map(&:strip).map{|p| x,y=p.split(",").map(&:to_i)}
   isOrtogonal = from[0] == to[0] || from[1] == to[1]
-  if isOrtogonal || true #&& i==0
-    xvalues = values_between(from[0], to[0])
-    yvalues = values_between(from[1], to[1])
-    puts "from #{from}, to: #{to}, xvalues: #{xvalues}, yvalues: #{yvalues}"
-    for y in yvalues
-      for x in xvalues
-        key = "#{x}_#{y}"  
-        points[key] = points[key] ? points[key]+1 : 1 
-      end
+  x = from[0]
+  y = from[1]
+  #if isOrtogonal
+    while x!= to[0] || y!= to[1]
+      set_point x,y
+      (x += x <= to[0] ? +1 : -1) if x!= to[0]
+      (y += y <= to[1] ? +1 : -1) if y!= to[1]
     end
-    #puts "\n"
-  end
+    set_point *to
+  #end
 end
-#binding.pry
-puts points.find_all{|k,v| v > 1}.count
+puts @points.find_all{|k,v| v > 1}.count
