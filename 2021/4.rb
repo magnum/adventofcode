@@ -34,5 +34,3 @@ drawings.each do |d|
      board_win!(d, i, board) if board_wins?(board)
   end
 end
-
-
