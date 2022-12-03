@@ -1,17 +1,9 @@
 require 'httparty'                                                                                         
 require 'pry'                                                                                              
                                                                                                            
-def calculatePoints(chooses)
-  # my choose is the second char
-  gamePoints = case chooses.chars.sort.join
-    when "AZ", "BX", "CY"
-      0
-    when "AX", "BY", "CZ"
-      3
-    when "AY", "BZ", "CX"
-      6
-  end
-  choosePoints = case chooses.chars.sort.last
+def calculatePoints(line)
+  p1,p2 = line.gsub(" ", "").chars.sort
+  points_p2 = case p2
     when "X"
       1
     when "Y"
@@ -19,13 +11,38 @@ def calculatePoints(chooses)
     when "Z"
       3
   end
-  points = gamePoints+choosePoints
-  puts "for chooses #{chooses.chars.sort.join} #{gamePoints}+#{choosePoints}=#{points}"
+  # my choose is the second char
+  points_line = case "#{p1}#{p2}"
+    when "AZ", "BX", "CY"
+      0
+    when "AX", "BY", "CZ"
+      3
+    when "AY", "BZ", "CX"
+      6
+  end
+  points = points_p2+points_line
+  puts "for line #{line} #{points_p2}+#{points_line}=#{points}"
   points                                                                                               
 end                                                                                                        
-                                                                                                           
+
+def calculateLine(line)
+  p1,suggestion= line.gsub(" ", "").chars.map(&:to_sym)
+  p2 = case suggestion
+    when :X
+     {"A":"Z", "B":"X", "C":"Y"}[p1]
+    when :Y
+     {"A":"X", "B":"Y", "C":"Z"}[p1]
+    when :Z
+     {"A":"Y", "B":"Z", "C":"X"}[p1]
+  end
+  #binding.pry
+  line= "#{p1} #{p2}"
+  #puts "p1 #{p1} p2 #{p2} suggestion #{suggestion}"
+  line
+end
+                                                                                                        
 lines = File.open("input2.txt").read.split("\n")                                 
-results = lines.map{|line| calculatePoints(line.gsub(" ", ""))}                                                
-puts "part1: #{results.inject{|sum, r| sum+=r}}"                                                                                 
-#puts "part2: #{sums.reverse.take(3).inject{|sum,i| sum+=i}}"                                               
-                                                              
+results1 = lines.map{|line| calculatePoints(line)}                                                
+puts "part1: #{results1.inject{|sum, r| sum+=r}}"                                                                                 
+results2 = lines.map{|line| calculatePoints(calculateLine(line))}
+puts "part2: #{results2.inject{|sum, r| sum+=r}}"                   
