@@ -1,7 +1,7 @@
 require 'httparty'                                                                                         
 require 'pry'                        
                                              
-couples = File.open("input4.txt").read
+couples = File.open("day4.txt").read
 .split("\n")   
 .map{|r| r.split(",").map{|r| r.split("-")}.map{|r| (r[0].to_i..r[1].to_i).to_a}}
 .map{|couple| couple.sort_by(&:length)}

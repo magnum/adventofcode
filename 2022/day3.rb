@@ -37,7 +37,7 @@ class Rucksack
 end
 
                                                          
-lines = File.open("input3.txt").read.split("\n")   
+lines = File.open("day3.txt").read.split("\n")   
 rucksacks = lines.map{|line| Rucksack.new(line)}                                                                      
 puts "part1: #{rucksacks.map(&:commonItemPriority).inject{|sum, r| sum+=r}}"  
 

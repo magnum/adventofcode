@@ -41,7 +41,7 @@ def calculateLine(line)
   line
 end
                                                                                                         
-lines = File.open("input2.txt").read.split("\n")                                 
+lines = File.open("day2.txt").read.split("\n")                                 
 results1 = lines.map{|line| calculatePoints(line)}                                                
 puts "part1: #{results1.inject{|sum, r| sum+=r}}"                                                                                 
 results2 = lines.map{|line| calculatePoints(calculateLine(line))}
