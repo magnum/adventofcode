@@ -12,9 +12,6 @@ lines.each do |line|
         stacks[col] << c
       end
     end
-    # line.chars.each_with_index do |c, index|
-    #   
-    # end
   end
 end
 stacks.compact!
@@ -39,7 +36,6 @@ puts "part1: #{stacks1.map(&:first).join("")}"
 
 rearrange(lines) do |line, howmany, from, to|
   moving_crates = stacks2[from-1].slice!(0,howmany)
-  puts "\nmoving #{moving_crates} from stack #{from} to stack #{to}"
   stacks2[to-1] = moving_crates + stacks2[to-1]
 end
 puts "part2: #{stacks2.map(&:first).join("")}"
