@@ -85,7 +85,7 @@ space_available = 70000000 - edirs.sort_by(&:size).last.size
 space_needed = 30000000 - space_available
 edir_to_delete = edirs.find_all{|edir| edir.size >= space_needed}.sort_by(&:size).first
 result2 = edir_to_delete.size
-binding.pry
+# binding.pry
 puts "part1: #{result1}" if result1   
 puts "part2: #{result2}" if result2 
 
