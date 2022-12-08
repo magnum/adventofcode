@@ -2,50 +2,14 @@
 require "pry"                        
 
 map = [];                                             
-lines = File.open("day8.txt").read
-.split("\n")   
+lines = File.open("day8.txt").read.split("\n")   
 .each_with_index do |line, x|
   map[x] = [] unless map[x]
-  line.chars.each_with_index do |h, y|
-    map[x][y] = h.to_i
-  end
+  line.chars.each_with_index{|h, y| map[x][y] = h.to_i}
 end
 
 
-def parse_map(map)
-  map_width = map[0].size
-  map_height = map.map{|row| row[0]}.size
-  map.each_with_index do |row, y|
-    row.each_with_index do |h, x|
-      trees_left= []
-      trees_right = []
-      trees_top = []
-      trees_bottom = []
-      col = map.map{|y| row[x]}
-      is_top = false
-      if y == 0 || y == map_height-1 # top and bottom lines
-        is_top = true
-      elsif (x == 0 || x == map_width-1) # left and right lines
-        is_top = true
-      else 
-        trees_left= map[y][0..x-1]
-        trees_right = map[y][x+1..map_width-1] 
-        trees_top = map.map{|line| line[x]}.map.with_index{|h, _y| (_y<y ) ? h : nil }.compact
-        trees_bottom = map.map{|line| line[x]}.map.with_index{|h, _y| (_y>y) ? h : nil }.compact
-        is_top = true if (trees_left.max < h || trees_right.max < h || trees_top.max < h || trees_bottom.max < h)
-        #puts "#{x}:#{y} h: #{h}, is_top: #{is_top}"
-      end
-      yield x, y, h, trees_left, trees_right, trees_top, trees_bottom, is_top
-    end
-  end
-end
-
-trees_visible = []
-parse_map(map) do |x, y, h, trees_left, trees_right, trees_top, trees_bottom, is_top|
-  trees_visible << [y,x] if is_top
-end
-
-def calculate_score(h, others)
+def score!(h, others)
   score = 0
   previous = 0
   others.each do |i|
@@ -55,13 +19,37 @@ def calculate_score(h, others)
   score
 end
 
+
+def parse_map(map)
+  map_width = map[0].size
+  map_height = map.map{|row| row[0]}.size
+  map.each_with_index do |row, y|
+    row.each_with_index do |h, x|
+      col = map.map{|y| row[x]}
+      lefts= map[y][0..x-1]
+      rights = map[y][x+1..map_width-1] 
+      tops = map.map{|line| line[x]}.map.with_index{|h, i| (i < y ) ? h : nil }.compact
+      bottoms = map.map{|line| line[x]}.map.with_index{|h, i| (i > y) ? h : nil }.compact
+      is_top = false
+      if  (y == 0 || y == map_height-1) || (x == 0 || x == map_width-1) # perimeter
+          is_top = true
+      else 
+        is_top = true if (lefts.max < h || rights.max < h || tops.max < h || bottoms.max < h)
+      end
+      score = score!(h, tops.reverse) * score!(h, lefts.reverse) * score!(h, bottoms) * score!(h, rights)
+      yield x, y, h, lefts, rights, tops, bottoms, is_top, score
+    end
+  end
+end
+
+trees_visible = []
+parse_map(map) do |x, y, h, lefts, rights, tops, bottoms, is_top|
+  trees_visible << [y,x] if is_top
+end
+
+
 scenic_scores = []
-parse_map(map) do |x, y, h, trees_left, trees_right, trees_top, trees_bottom, is_top|
-  st = calculate_score(h, trees_top.reverse) 
-  sl = calculate_score(h, trees_left.reverse)
-  sb = calculate_score(h, trees_bottom)
-  sr = calculate_score(h, trees_right)
-  score = sl * sr * st * sb
+parse_map(map) do |x, y, h, lefts, rights, tops, bottoms, is_top, score|
   #puts "x: #{x}, y: #{y}, h: #{h}, score: #{score}, st: #{st}, sl: #{sl},  sb: #{sb}, sr: #{sr}"
   scenic_scores << {x: x, y: y, score: score}
 end
