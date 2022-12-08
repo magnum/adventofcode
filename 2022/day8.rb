@@ -36,8 +36,7 @@ def parse_map(map)
       else 
         is_top = true if (lefts.max < h || rights.max < h || tops.max < h || bottoms.max < h)
       end
-      score = score!(h, tops.reverse) * score!(h, lefts.reverse) * score!(h, bottoms) * score!(h, rights)
-      yield x, y, h, lefts, rights, tops, bottoms, is_top, score
+      yield x, y, h, lefts, rights, tops, bottoms, is_top
     end
   end
 end
@@ -48,14 +47,13 @@ parse_map(map) do |x, y, h, lefts, rights, tops, bottoms, is_top|
 end
 
 
-scenic_scores = []
-parse_map(map) do |x, y, h, lefts, rights, tops, bottoms, is_top, score|
-  #puts "x: #{x}, y: #{y}, h: #{h}, score: #{score}, st: #{st}, sl: #{sl},  sb: #{sb}, sr: #{sr}"
-  scenic_scores << {x: x, y: y, score: score}
+scores = []
+parse_map(map) do |x, y, h, lefts, rights, tops, bottoms, is_top|
+  scores << score!(h, tops.reverse) * score!(h, lefts.reverse) * score!(h, bottoms) * score!(h, rights)
 end
-#binding.pry
+
 result1 = trees_visible.count
-result2 = scenic_scores.map{|t| t[:score]}.max
+result2 = scores.max
 puts "part1: #{result1}" if result1   
 puts "part2: #{result2}" if result2 
 
