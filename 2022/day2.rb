@@ -46,3 +46,12 @@ results1 = lines.map{|line| calculatePoints(line)}
 puts "part1: #{results1.inject{|sum, r| sum+=r}}"                                                                                 
 results2 = lines.map{|line| calculatePoints(calculateLine(line))}
 puts "part2: #{results2.inject{|sum, r| sum+=r}}"                   
+
+
+# found interesting solutions at 
+# https://github.com/damyvv/advent-of-code-2022/blob/master/solutions/day02.rb
+# kudos! something to learn from...
+# require 'pry'
+# input = File.read('day2.txt').lines.map {|l| l.strip.split }.map {|a,b| [a.ord-'A'.ord+1, b.ord-'X'.ord+1] }
+# p input.map { |a,b| 3*(((b+1)-a)%3) }.sum + input.map {|a,b| b }.sum
+# p input.map { |a,b| (a+b)%3+1 }.sum + input.map { |a,b| (b-1)*3 }.sum
