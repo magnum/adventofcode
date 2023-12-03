@@ -28,7 +28,7 @@ else
 fi  
 
 #https://github.com/scarvalhojr/aoc-cli
-aoc read -d $1 > "day$1.md"
+aoc download -d $1 -i "day$1.txt" -p "day$1.md" 
 
 touch "day$1.txt"
 touch "day$1.test.txt"
