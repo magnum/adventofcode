@@ -29,7 +29,7 @@ fi
 
 #touch "day$1.md"
 #https://github.com/GreenLightning/advent-of-code-downloader
-aocdl -day $1 -output day$1.txt -force
+aocdl -day $1 -output day$1.txt -force 
 
 touch "day$1.md"
 touch "day$1.txt"
