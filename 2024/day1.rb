@@ -19,7 +19,6 @@ counts = []
 list1.each do |a|
   counts << a*list2.count(a)
 end
-puts counts
 #binding.pry
 result1 = difs.sum
 result2 = counts.sum
