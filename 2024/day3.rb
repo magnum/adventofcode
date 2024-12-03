@@ -5,8 +5,8 @@ content = File.open("day3.txt").read
 
 def calculate(operations)
   operations
-  .map{|op| op.scan(/\d+/).map(&:to_i)}
-  .inject(0){|sum, o| sum + o[0] * o[1]}
+  .map{|op| op.scan(/\d+/).map(&:to_i)} # extract numbers
+  .inject(0){|sum, o| sum + o[0] * o[1]} # multiply each pair of numbers and sum them
 end
 
 operations1 = content.scan(/mul\(\d+,\d+\)/)
