@@ -12,8 +12,18 @@ code_filename="day$1.rb"
 if [ ! -f $code_filename ]
 then
   echo "
-require \"pry\"                        
-                                             
+require "pry"                 
+
+@debug = ARGV.index(\"--debug\") || false
+day = __FILE__.split("/").last.split(\".\").first.gsub(\"day\",\"\").to_i
+filename = \"day#{day}.txt\"
+filename = \"day#{day}.test.txt\" if ARGV.index(\"--test\")
+puts \"filename: #{filename} debug: #{@debug}\" 
+
+def pause
+  STDIN.gets.chomp if @debug
+end
+                    
 lines = File.open(\"day$1.txt\").read
 .split(\"\n\")   
 #binding.pry
