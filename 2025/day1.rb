@@ -28,12 +28,12 @@ lines.each do |line|
   password1 += 1 if value == 0
   
   # Part 2
-  zeros_during = 0
+  zeros = 0
   (0..times).each do |i|
     pos = (start_value.send(operation, i)) % 100
-    zeros_during += 1 if pos == 0
+    zeros += 1 if pos == 0
   end
-  password2 += zeros_during
+  password2 += zeros
   
   puts "#{line} => #{value}" if @debug
 end
