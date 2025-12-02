@@ -20,15 +20,23 @@ lines.each do |line|
   chars = line.chars
   direction = chars.shift
   times = chars.join.to_i
+  
+  # Part 1
+  start_value = value
   operation = direction == "L" ? "-" : "+"
-  value2 = value
   value = value.send(operation, times) % 100
   password1 += 1 if value == 0
-  password2 += 1 if value == 0 
-  puts "#{line} => #{value}"
-  password2 += (value.send(operation, times) / 100).abs
+  
+  # Part 2
+  zeros_during = 0
+  (0..times).each do |i|
+    pos = (start_value.send(operation, i)) % 100
+    zeros_during += 1 if pos == 0
+  end
+  password2 += zeros_during
+  
+  puts "#{line} => #{value}" if @debug
 end
-
 
 result1 = password1
 result2 = password2
